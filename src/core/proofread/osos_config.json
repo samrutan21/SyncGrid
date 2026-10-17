@@ -1,0 +1,91 @@
+{
+  "_comment": "OSOS subtitle checker config. Edit this per-episode as you verify new names against the LFA roster. The code reads from here; do not hard-code names in the .py.",
+
+  "names_people": [
+    "Shelton Eppler", "Eppler", "Shelton",
+    "Axel Montini", "Montini",
+    "Tommy Auger", "Tommy", "Auger",
+    "Tristen Wallace", "Wallace",
+    "Erick Niño", "Niño",
+    "Johan",
+    "Colby Burton", "Burton", "Colby",
+    "Christian McCaffrey", "McCaffrey",
+    "Luis Humberto López Tinoco", "López",
+    "Jeremy Johnson", "Johnson",
+    "Isaac Cuevas", "Cuevas",
+    "Juwan Manigo", "Manigo",
+    "Justin Lewis", "Lewis",
+    "Jorge Valdez", "Valdez",
+    "Kelvin McKnight", "McKnight",
+    "Brandon Calzoncit", "Calzoncit",
+    "Chuy Aguirre", "Aguirre",
+    "Anny Garza", "Anny", "Garza",
+    "Denzel Strong",
+    "Joshua Mack", "Mack",
+    "Alejandro García", "García", "Alex",
+    "Pato Quiroga", "Quiroga",
+    "Jamoi Hodge", "Hodge",
+    "Boykin",
+    "Justice",
+    "George Kittle", "Kittle",
+    "Claudio",
+    "Jiya Wright", "Jiya", "Wright"
+  ],
+
+  "names_teams": [
+    "Osos", "Monterrey Osos",
+    "Caudillos",
+    "Dinos", "Saltillo Dinos",
+    "Raptors",
+    "Mexicas", "Mexico City Mexicas",
+    "Arcángeles", "Arcángeles de Puebla",
+    "Auténticos Tigres",
+    "Chihuahua"
+  ],
+
+  "names_places_orgs": [
+    "Monterrey", "Puebla", "Saltillo",
+    "Mexico", "Mexico City", "Tennessee",
+    "LFA", "NFL",
+    "Los Invasores de Nuevo León", "Nuevo León",
+    "Channel 28"
+  ],
+
+  "allowed_accented": "áéíóúñÁÉÍÓÚÑ",
+  "allowed_curly": "’‘“”",
+
+  "profanity_leave_as_is": [
+    "shit", "fuck", "fucking", "fucked", "badass", "badasses",
+    "bitch", "bitches", "pissed", "damn", "hell"
+  ],
+
+  "homophone_sets": [
+    ["their", "there", "they're"],
+    ["your", "you're"],
+    ["its", "it's"],
+    ["then", "than"],
+    ["to", "too", "two"],
+    ["lose", "loose"],
+    ["lead", "led"],
+    ["past", "passed"],
+    ["affect", "effect"],
+    ["whose", "who's"],
+    ["were", "we're", "where"],
+    ["aloud", "allowed"],
+    ["bare", "bear"],
+    ["complement", "compliment"],
+    ["principal", "principle"],
+    ["roll", "role"],
+    ["weather", "whether"]
+  ],
+
+  "number_words": [
+    "one","two","three","four","five","six","seven","eight","nine","ten",
+    "eleven","twelve",
+    "first","second","third","fourth","fifth","sixth","seventh","eighth",
+    "ninth","tenth"
+  ],
+
+  "ellipsis_house_style": "...",
+  "flag_apostrophe_consistency": false
+}
