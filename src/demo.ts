@@ -44,18 +44,42 @@ interface DemoManifest {
 
 const KEY = 'cutsheet:demo';
 
-export async function openDemo(): Promise<void> {
-  const base = import.meta.env.BASE_URL;
-  let manifest: DemoManifest;
+async function loadManifest(): Promise<DemoManifest | null> {
   try {
-    const res = await fetch(`${base}demo/manifest.json`, { cache: 'no-store' });
-    if (!res.ok) return;
-    manifest = (await res.json()) as DemoManifest;
+    const res = await fetch(`${import.meta.env.BASE_URL}demo/manifest.json`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return (await res.json()) as DemoManifest;
   } catch {
-    return;
+    return null;
   }
-  const versions = manifest.versions ?? [];
-  if (!versions.length) return;
+}
+
+/** Put the hosted picture back on the demo project. Other projects are left alone. */
+export async function attachDemoVideos(): Promise<void> {
+  const project = app.get().project;
+  const saved = safeGet(KEY);
+  const split = saved?.indexOf('\t') ?? -1;
+  const id = split >= 0 ? saved!.slice(split + 1) : '';
+  if (!project || project.id !== id) return;
+  const manifest = await loadManifest();
+  const versions = manifest?.versions ?? [];
+  if (!manifest || !versions.length) return;
+  const base = import.meta.env.BASE_URL;
+  for (const episode of project.episodes) {
+    for (const version of episode.versions) {
+      const spec = versions.find((v) => v.label === version.label) ?? versions[0];
+      const name = spec?.video || manifest.video;
+      if (!name) continue;
+      await showHostedVideo(version.id, `${base}demo/${encodeURIComponent(name)}`, name, spec?.startTC || manifest.startTC);
+    }
+  }
+}
+
+export async function openDemo(): Promise<void> {
+  const manifest = await loadManifest();
+  const versions = manifest?.versions ?? [];
+  if (!manifest || !versions.length) return;
+  const base = import.meta.env.BASE_URL;
 
   const revision = String(manifest.revision ?? 1);
   const saved = safeGet(KEY);
@@ -96,14 +120,5 @@ export async function openDemo(): Promise<void> {
     if (id) safeSet(KEY, `${revision}\t${id}`);
   }
 
-  const project = app.get().project;
-  if (!project) return;
-  for (const episode of project.episodes) {
-    for (const version of episode.versions) {
-      const spec = versions.find((v) => v.label === version.label) ?? versions[0];
-      const name = spec?.video || manifest.video;
-      if (!name) continue;
-      await showHostedVideo(version.id, `${base}demo/${encodeURIComponent(name)}`, name, spec?.startTC || manifest.startTC);
-    }
-  }
+  await attachDemoVideos();
 }

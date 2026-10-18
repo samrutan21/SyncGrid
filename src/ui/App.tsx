@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { importBackup } from '../export/files';
 import { captureMissing } from '../media/screenshots';
-import { openDemo } from '../demo';
+import { attachDemoVideos, openDemo } from '../demo';
 import { loadSampleProject, sampleAvailable } from '../sample';
 import { addEpisode, addVersion, app, createProject, deleteProject, init, openProject, refreshProjects, toast } from '../state/app';
 import { useStore } from '../state/createStore';
@@ -17,6 +17,12 @@ import { VersionSetup } from './modals/VersionSetup';
 import { Player, player } from './Player';
 import { SheetView } from './SheetView';
 import { TopBar } from './TopBar';
+
+/** Open a project from the list. The public demo puts its hosted picture back. */
+async function openListedProject(id: string) {
+  await openProject(id);
+  if (import.meta.env.VITE_DEMO === '1') await attachDemoVideos();
+}
 
 export function App() {
   const ready = useStore(app, (s) => s.ready);
@@ -219,7 +225,7 @@ function Home() {
               try {
                 const p = await importBackup(f[0]);
                 await refreshProjects();
-                await openProject(p.id);
+                await openListedProject(p.id);
                 toast(`Imported “${p.name}”.`);
               } catch (e) {
                 toast((e as Error).message, 'error');
@@ -255,7 +261,7 @@ function Home() {
           <ul className="project-list">
             {projects.map((p) => (
               <li key={p.id}>
-                <button className="project-card" onClick={() => void openProject(p.id)}>
+                <button className="project-card" onClick={() => void openListedProject(p.id)}>
                   <strong>{p.name}</strong>
                   <span className="muted small">
                     {p.episodes} episode{p.episodes === 1 ? '' : 's'} · updated {new Date(p.updatedAt).toLocaleString()}

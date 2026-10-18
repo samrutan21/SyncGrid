@@ -1096,10 +1096,13 @@ export async function showHostedVideo(versionId: string, url: string, fileName: 
   app.set({ videoUrls: urls, ...(detect ? { holdCaptureFor: versionId } : {}) });
 
   if (given) {
-    updateProject((p) => {
-      const v = findVersion(p, versionId);
-      if (v) v.video = { ...(v.video ?? { fileName }), fileName, startTC: given, hasHandle: false };
-    });
+    const slot = version.video;
+    if (slot?.fileName !== fileName || slot.startTC !== given || slot.hasHandle) {
+      updateProject((p) => {
+        const v = findVersion(p, versionId);
+        if (v) v.video = { ...(v.video ?? { fileName }), fileName, startTC: given, hasHandle: false };
+      });
+    }
     return;
   }
   if (!detect) return;
