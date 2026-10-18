@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { importBackup } from '../export/files';
 import { captureMissing } from '../media/screenshots';
+import { openDemo } from '../demo';
 import { loadSampleProject, sampleAvailable } from '../sample';
 import { addEpisode, addVersion, app, createProject, deleteProject, init, openProject, refreshProjects, toast } from '../state/app';
 import { useStore } from '../state/createStore';
@@ -23,7 +24,18 @@ export function App() {
   const toastMsg = useStore(app, (s) => s.toast);
 
   useEffect(() => {
-    void init();
+    void (async () => {
+      await init();
+      // The public site is a separate build. Local dev never sets this.
+      if (import.meta.env.VITE_DEMO === '1') {
+        app.set({ ready: false });
+        try {
+          await openDemo();
+        } finally {
+          app.set({ ready: true });
+        }
+      }
+    })();
   }, []);
 
   return (

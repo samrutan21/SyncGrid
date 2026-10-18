@@ -1001,6 +1001,61 @@ function attachVideoFile(versionId: string, file: File) {
   app.set({ videoUrls: urls });
 }
 
+/**
+ * Point a version at a video that is already hosted with the site.
+ * A start timecode in the call is used as-is. Otherwise the file is read once.
+ */
+export async function showHostedVideo(versionId: string, url: string, fileName: string, startTC?: string) {
+  const project = app.get().project;
+  const version = project ? findVersion(project, versionId) : undefined;
+  if (!version) return;
+
+  const given = startTC && isTimecode(startTC) ? startTC : '';
+  const known = version.video?.fileName === fileName && version.video.detectedStartTC !== undefined;
+  const detect = !given && !known;
+
+  const urls = { ...app.get().videoUrls };
+  const prev = urls[versionId];
+  if (prev && prev !== url && prev.startsWith('blob:')) URL.revokeObjectURL(prev);
+  urls[versionId] = url;
+  app.set({ videoUrls: urls, ...(detect ? { holdCaptureFor: versionId } : {}) });
+
+  if (given) {
+    updateProject((p) => {
+      const v = findVersion(p, versionId);
+      if (v) v.video = { ...(v.video ?? { fileName }), fileName, startTC: given, hasHandle: false };
+    });
+    return;
+  }
+  if (!detect) return;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const file = new File([await res.blob()], fileName, { type: res.headers.get('content-type') || 'video/mp4' });
+    let detected: DetectedStart | null = null;
+    try {
+      const tc = await readContainerStartTC(file);
+      if (tc) detected = { tc, from: 'file' };
+    } catch {
+      detected = null;
+    }
+    if (!detected) {
+      try {
+        const burned = await readBurnedStartTC(file, version.rate);
+        if (burned.tc) detected = { tc: burned.tc, from: 'picture' };
+        writeVideoSlot(versionId, file, false, detected, burned.settled, true);
+        return;
+      } catch {
+        /* keep the picture up even if the timecode cannot be read */
+      }
+    }
+    writeVideoSlot(versionId, file, false, detected, true, true);
+  } finally {
+    if (app.get().holdCaptureFor === versionId) app.set({ holdCaptureFor: null });
+  }
+}
+
 /** Load a remembered video without prompting, if Chrome still has permission. */
 export async function autoConnectVideo(versionId: string) {
   if (app.get().videoUrls[versionId]) return;

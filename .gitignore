@@ -73,3 +73,7 @@ public/sample-data/
 *.srt
 *.vtt
 *.fcpxml
+
+# The public demo is the one place episode files may be committed.
+!public/demo/
+!public/demo/**

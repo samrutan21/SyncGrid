@@ -34,7 +34,37 @@ Your browser opens at **http://localhost:5173** (if it isn't Chrome, copy that a
 | `npm test` | Runs the parser/grouping/change-tracking tests against the sample episode |
 | `npm run typecheck` | TypeScript check |
 | `npm run build` | Production build into `dist/` (static files, host anywhere) |
+| `npm run build:demo` | The public GitHub Pages build. `npm run dev` does not use this |
 | `npm run preview` | Serves the production build locally |
+
+### Public demo
+
+The site at `https://samrutan21.github.io/SyncGrid/` is built from this same code on every push to `main`. It only loads what is in `public/demo/`. Local episode files, including `public/sample-data`, are ignored and are not part of that build.
+
+To put the royalty-free documentary on the demo, add its picture and interchange files to `public/demo/` and name them in `public/demo/manifest.json`:
+
+```json
+{
+  "revision": 1,
+  "project": "Demo",
+  "episode": "Episode 1",
+  "video": "picture.mp4",
+  "startTC": "01:00:00:00",
+  "versions": [
+    {
+      "label": "Version 1",
+      "slots": {
+        "gfx": { "xml": "gfx.xml", "edl": "gfx.edl" },
+        "music": { "xml": "cue.xml", "edl": "cue.edl" },
+        "archival": { "xml": "archival.xml", "edl": "archival.edl" },
+        "subs": { "srt": "subtitles.srt" }
+      }
+    }
+  ]
+}
+```
+
+Leave out any file you don't have. `startTC` is the first frame of the video file. Raise `revision` when you replace those files so the site rebuilds the demo project. Use an H.264 MP4. GitHub accepts the file under 100 MB and warns above 50 MB.
 
 ---
 
