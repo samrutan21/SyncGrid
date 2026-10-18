@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildSubtitleItems } from '../src/core/parsers/srt';
 import { applySuggestion, proofread, proposedText } from '../src/core/proofread/osos';
-import { subtitleCheck } from '../src/core/proofread/rules';
+import { parseRuleConfig, subtitleCheck } from '../src/core/proofread/rules';
 import type { Finding } from '../src/core/proofread/types';
 import type { Rate } from '../src/core/timecode';
 
@@ -286,6 +286,12 @@ The runner, Jiya Wright.
 `);
     expect(findings.some((f) => f.rule_id === 'PUNCT-COMMA-CASE')).toBe(false);
     expect(findings.some((f) => f.severity === 'ERROR')).toBe(false);
+  });
+
+  it('accepts a subtitle rule file and ignores anything else', () => {
+    expect(parseRuleConfig({ names_people: ['Ada Lovelace'] })?.names_people).toEqual(['Ada Lovelace']);
+    expect(parseRuleConfig({ hello: 'no' })).toBeNull();
+    expect(subtitleCheck('1\n00:00:01,000 --> 00:00:02,000\nHello.\n', [], 'skylab').byItem.size).toBe(0);
   });
 
   it('shows a corrected line and leaves the original text intact', () => {

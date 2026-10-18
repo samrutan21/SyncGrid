@@ -6,12 +6,13 @@ import type { RepeatInfo } from '../core/pipeline';
 import { deltaLabel, durationTC, framesToTC } from '../core/timecode';
 import type { CategoryConfig, Item, Version } from '../core/types';
 import { captureAt, shotFrameOf } from '../media/screenshots';
-import { GFX_CATEGORY_SETS, gfxTypeLabel, gfxTypesOf, isGfxTemp } from '../core/gfxCategories';
+import { gfxTypeLabel, gfxTypesOf, isGfxTemp } from '../core/gfxCategories';
 import { proposedText } from '../core/proofread/osos';
-import { SUBTITLE_RULE_SETS, subtitleCheck } from '../core/proofread/rules';
+import { subtitleCheck } from '../core/proofread/rules';
 import type { Finding } from '../core/proofread/types';
 import { GfxCategoryFilter } from './GfxCategories';
-import { addItem, app, deleteItem, mergeWithNext, playback, renameItem, setGfxCategories, setSubtitleRules, splitItem, updateProject, type ItemFilter } from '../state/app';
+import { GfxProfileSelect, SubtitleProfileSelect } from './Profiles';
+import { addItem, app, deleteItem, mergeWithNext, playback, renameItem, splitItem, updateProject, type ItemFilter } from '../state/app';
 import { useStore } from '../state/createStore';
 import { Button, CommitInput, cssVars, Icon, StatusPill, Swatch } from './common';
 import { cellText, Field, Shot } from './Field';
@@ -59,12 +60,12 @@ export function CategoryPanel({ cat }: { cat: CategoryConfig }) {
   const selected = useStore(app, (s) => (s.selected?.cat === cat.key ? s.selected.id : null));
   const items = version.items[cat.key];
   const ruleId = useStore(app, (s) => s.project?.settings.subtitleRules);
-  const gfxSet = useStore(app, (s) => s.project?.settings.gfxCategories);
+  const ruleConfig = useStore(app, (s) => s.project?.settings.subtitleProfiles?.find((p) => p.id === s.project?.settings.subtitleRules)?.config);
   const gfxTypes = useStore(app, (s) => (s.project ? gfxTypesOf(s.project.settings) : null));
   const gfxFilter = useStore(app, (s) => s.gfxFilter);
   const checks = useMemo(
-    () => (cat.source === 'srt' ? subtitleCheck(version.slots[cat.key]?.srt?.text, items, ruleId) : { byItem: new Map<string, Finding[]>(), file: [] as Finding[] }),
-    [cat.source, cat.key, version, items, ruleId],
+    () => (cat.source === 'srt' ? subtitleCheck(version.slots[cat.key]?.srt?.text, items, ruleId, ruleConfig) : { byItem: new Map<string, Finding[]>(), file: [] as Finding[] }),
+    [cat.source, cat.key, version, items, ruleId, ruleConfig],
   );
   const statusCol = cat.columns.find((c) => c.type === 'status' && !c.hidden);
   const [showRemoved, setShowRemoved] = useState(false);
@@ -115,24 +116,8 @@ export function CategoryPanel({ cat }: { cat: CategoryConfig }) {
           <span className="count">{items?.length ?? 0}</span>
         </div>
         <div className="panel-tools">
-          {cat.source === 'srt' && (
-            <select className="input rules-select" aria-label="Subtitle rules" title="Proofreading rules for this project" value={ruleId || 'off'} onChange={(e) => setSubtitleRules(e.target.value)}>
-              {SUBTITLE_RULE_SETS.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          )}
-          {cat.key === 'gfx' && (
-            <select className="input rules-select wide" aria-label="GFX categories" title="GFX categories for this project" value={gfxSet || 'off'} onChange={(e) => setGfxCategories(e.target.value)}>
-              {GFX_CATEGORY_SETS.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          )}
+          {cat.source === 'srt' && <SubtitleProfileSelect />}
+          {cat.key === 'gfx' && <GfxProfileSelect wide />}
           {cat.key === 'gfx' && gfxTypes && <GfxCategoryFilter types={gfxTypes} />}
           <button className="icon-btn" title="Add an entry at the playhead" aria-label={`Add a ${cat.label} entry`} onClick={() => addItem(version.id, cat.key)}>
             <Icon name="plus" size={15} />

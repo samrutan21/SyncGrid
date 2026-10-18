@@ -275,10 +275,14 @@ export interface ProjectSettings {
   archivalRepeatMinSeconds: number;
   /** Subtitle proofreading pass. Absent or "off" runs nothing. */
   subtitleRules?: string;
-  /** GFX category set. Absent or "off" is one tracker. */
+  /** Rule files added in this project. The built-in OSOS pass is not stored here. */
+  subtitleProfiles?: { id: string; label: string; config: import('./proofread/osos').OsosConfig }[];
+  /** GFX category set. Absent or "off" is one tracker. "osos" or a gfxProfiles id. */
   gfxCategories?: string;
   /** Types for the active GFX set, in tab and export order. */
   gfxTypes?: { id: string; label: string; short: string }[];
+  /** GFX profiles added in this project, plus a saved copy of OSOS when its tags were edited. */
+  gfxProfiles?: { id: string; label: string; types: { id: string; label: string; short: string }[] }[];
 }
 
 export interface Project {

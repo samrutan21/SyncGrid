@@ -28,10 +28,18 @@ export const OSOS_GFX_TYPES: GfxType[] = [
 export const GFX_TYPE_COL = 'gfxType';
 export const GFX_TEMP_COL = 'gfxTemp';
 
-/** The project's type list, or null when GFX categories are off. */
+/** The project's type list, or null when GFX categories are off. An empty list is a profile with no tags yet. */
 export function gfxTypesOf(settings: ProjectSettings): GfxType[] | null {
-  if (settings.gfxCategories !== 'osos') return null;
-  return settings.gfxTypes?.length ? settings.gfxTypes : OSOS_GFX_TYPES;
+  const id = settings.gfxCategories;
+  if (!id || id === 'off') return null;
+  if (settings.gfxTypes) return settings.gfxTypes;
+  if (id === 'osos') return OSOS_GFX_TYPES;
+  return settings.gfxProfiles?.find((p) => p.id === id)?.types ?? [];
+}
+
+/** Profiles to show under the built-in OSOS set. */
+export function customGfxProfiles(settings: ProjectSettings): { id: string; label: string }[] {
+  return (settings.gfxProfiles ?? []).filter((p) => p.id !== 'osos').map((p) => ({ id: p.id, label: p.label }));
 }
 
 export function gfxTypeLabel(item: Item): string {

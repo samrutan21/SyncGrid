@@ -82,9 +82,10 @@ function Sheet({ cat, gfxTypes }: { cat: CategoryConfig; gfxTypes: GfxType[] | n
   const gfxSheet = useStore(app, (s) => s.gfxSheet);
   const items = version.items[cat.key];
   const ruleId = useStore(app, (s) => s.project?.settings.subtitleRules);
+  const ruleConfig = useStore(app, (s) => s.project?.settings.subtitleProfiles?.find((p) => p.id === s.project?.settings.subtitleRules)?.config);
   const checks = useMemo(
-    () => (cat.source === 'srt' && ruleId && ruleId !== 'off' ? subtitleCheck(version.slots[cat.key]?.srt?.text, items, ruleId) : null),
-    [cat.source, cat.key, version, items, ruleId],
+    () => (cat.source === 'srt' && ruleId && ruleId !== 'off' ? subtitleCheck(version.slots[cat.key]?.srt?.text, items, ruleId, ruleConfig) : null),
+    [cat.source, cat.key, version, items, ruleId, ruleConfig],
   );
   const cols = cat.columns.filter((c) => !c.hidden);
   const rows = useMemo(() => {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { newId } from '../../core/pipeline';
-import { GFX_CATEGORY_SETS, gfxTypesOf } from '../../core/gfxCategories';
-import { SUBTITLE_RULE_SETS } from '../../core/proofread/rules';
+import { gfxTypesOf } from '../../core/gfxCategories';
 import { isTimecode, rateLabel, type Rate } from '../../core/timecode';
 import type { CategoryConfig, ColumnTemplate, GroupingMode } from '../../core/types';
-import { applyTemplate, deleteProject, reprocessAll, saveTemplate, setGfxCategories, updateCategories, updateProject } from '../../state/app';
+import { applyTemplate, deleteProject, reprocessAll, saveTemplate, updateCategories, updateProject } from '../../state/app';
 import { store } from '../../storage/store';
 import { AddGfxType } from '../GfxCategories';
+import { GfxProfileSelect, SubtitleProfileSelect } from '../Profiles';
 import { Button, CommitInput, Icon, Modal, PromptModal, Swatch } from '../common';
 import { useProject } from '../hooks';
 
@@ -90,38 +90,11 @@ export function SettingsModal({ onClose }: { onClose: () => void }) {
             </label>
             <label className="field">
               <span>Subtitle rules</span>
-              <select
-                className="input"
-                aria-label="Subtitle rules"
-                value={s.subtitleRules || 'off'}
-                onChange={(e) =>
-                  set((d) => {
-                    if (e.target.value === 'off') delete d.settings.subtitleRules;
-                    else d.settings.subtitleRules = e.target.value;
-                  }, false)
-                }
-              >
-                {SUBTITLE_RULE_SETS.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
+              <SubtitleProfileSelect />
             </label>
             <label className="field">
               <span>GFX categories</span>
-              <select
-                className="input"
-                aria-label="GFX categories"
-                value={s.gfxCategories || 'off'}
-                onChange={(e) => setGfxCategories(e.target.value)}
-              >
-                {GFX_CATEGORY_SETS.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
+              <GfxProfileSelect />
             </label>
             {gfxTypesOf(s) && (
               <label className="field span-2">

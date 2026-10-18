@@ -74,6 +74,17 @@ describe('GFX categories', () => {
     expect(reorderGfxTypes(OSOS_GFX_TYPES, 'l3', 'missing')).toBeNull();
   });
 
+  it('uses a project profile’s own tags', () => {
+    const settings: ProjectSettings = {
+      ...defaultSettings(),
+      gfxCategories: 'skylab',
+      gfxTypes: [{ id: 'l3', label: 'Lower Thirds', short: 'L3s' }],
+      gfxProfiles: [{ id: 'skylab', label: 'Skylab GFX', types: [{ id: 'l3', label: 'Lower Thirds', short: 'L3s' }] }],
+    };
+    expect(gfxTypesOf(settings)?.map((t) => t.label)).toEqual(['Lower Thirds']);
+    expect(gfxXlsxLabels('GFX', settings)).toEqual(['GFX', 'Lower Thirds', 'Temp']);
+  });
+
   it('puts the full tracker first, then each category, then Temp', () => {
     const settings: ProjectSettings = { ...defaultSettings(), gfxCategories: 'osos', gfxTypes: [...OSOS_GFX_TYPES, { id: 'bugs-2', label: 'Bug IDs', short: 'Bug IDs' }] };
     expect(gfxXlsxLabels('GFX', settings)).toEqual([

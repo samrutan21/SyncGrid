@@ -427,18 +427,72 @@ export function clearSlotFile(versionId: string, catKey: string, which: 'xml' | 
   reprocess(versionId, [catKey]);
 }
 
+/** Keep the active tag list on its profile before another one is selected. */
+function stashGfxProfile(p: { settings: import('../core/types').ProjectSettings }) {
+  const id = p.settings.gfxCategories;
+  if (!id || id === 'off') return;
+  const types = (p.settings.gfxTypes ?? (id === 'osos' ? OSOS_GFX_TYPES : [])).map((t) => ({ ...t }));
+  const profiles = p.settings.gfxProfiles ? p.settings.gfxProfiles.slice() : [];
+  const label = profiles.find((x) => x.id === id)?.label ?? (id === 'osos' ? 'OSOS GFX CATEGORIES' : id);
+  const entry = { id, label, types };
+  const at = profiles.findIndex((x) => x.id === id);
+  if (at >= 0) profiles[at] = entry;
+  else profiles.push(entry);
+  p.settings.gfxProfiles = profiles;
+}
+
+function profileSlug(name: string, taken: string[]): string {
+  let slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'profile';
+  if (taken.includes(slug)) {
+    let n = 2;
+    while (taken.includes(`${slug}-${n}`)) n++;
+    slug = `${slug}-${n}`;
+  }
+  return slug;
+}
+
 /** Which GFX category set is on. "off" hides the tabs and leaves tags in place. */
 export function setGfxCategories(id: string) {
   updateProject((p) => {
+    stashGfxProfile(p);
     if (!id || id === 'off') delete p.settings.gfxCategories;
     else {
       p.settings.gfxCategories = id;
-      if (id === 'osos' && !p.settings.gfxTypes?.length) p.settings.gfxTypes = OSOS_GFX_TYPES.map((t) => ({ ...t }));
+      const saved = p.settings.gfxProfiles?.find((x) => x.id === id);
+      p.settings.gfxTypes = saved ? saved.types.map((t) => ({ ...t })) : id === 'osos' ? OSOS_GFX_TYPES.map((t) => ({ ...t })) : [];
     }
     syncGfxColumns(p.categories, p.settings);
   });
   if (!id || id === 'off') app.set({ gfxSheet: 'all', gfxFilter: [] });
   else app.set((s) => ({ sheetCat: 'gfx', enabled: s.enabled.includes('gfx') ? s.enabled : ['gfx', ...s.enabled] }));
+  void flushSave();
+}
+
+/** Add an empty GFX profile and turn it on. Tags are added afterwards. */
+export function addGfxProfile(label: string) {
+  const name = label.trim();
+  if (!name) return;
+  if (/^(all|temp|off)$/i.test(name) || name.toLowerCase() === 'osos gfx categories') {
+    toast(`“${name}” can’t be a profile.`);
+    return;
+  }
+  let created = '';
+  updateProject((p) => {
+    const profiles = p.settings.gfxProfiles ?? [];
+    if (profiles.some((x) => x.id !== 'osos' && x.label.toLowerCase() === name.toLowerCase())) return;
+    stashGfxProfile(p);
+    const id = profileSlug(name, ['osos', 'off', ...(p.settings.gfxProfiles ?? []).map((x) => x.id)]);
+    p.settings.gfxProfiles = [...(p.settings.gfxProfiles ?? []), { id, label: name, types: [] }];
+    p.settings.gfxCategories = id;
+    p.settings.gfxTypes = [];
+    syncGfxColumns(p.categories, p.settings);
+    created = id;
+  });
+  if (!created) {
+    toast(`“${name}” is already a GFX profile.`);
+    return;
+  }
+  app.set((s) => ({ sheetCat: 'gfx', gfxSheet: 'all', gfxFilter: [], enabled: s.enabled.includes('gfx') ? s.enabled : ['gfx', ...s.enabled] }));
   void flushSave();
 }
 
@@ -466,8 +520,8 @@ export function addGfxType(label: string) {
   let added = false;
   let duplicate = false;
   updateProject((p) => {
-    if (p.settings.gfxCategories !== 'osos') return;
-    const list: GfxType[] = p.settings.gfxTypes?.length ? p.settings.gfxTypes : OSOS_GFX_TYPES.map((t) => ({ ...t }));
+    if (!p.settings.gfxCategories || p.settings.gfxCategories === 'off') return;
+    const list: GfxType[] = p.settings.gfxTypes ?? (p.settings.gfxCategories === 'osos' ? OSOS_GFX_TYPES.map((t) => ({ ...t })) : []);
     if (list.some((t) => t.label.toLowerCase() === name.toLowerCase())) {
       duplicate = true;
       return;
@@ -487,6 +541,27 @@ export function toggleGfxFilter(id: string) {
     const has = s.gfxFilter.includes(id);
     return { gfxFilter: has ? s.gfxFilter.filter((x) => x !== id) : [...s.gfxFilter, id] };
   });
+}
+
+/** Add a subtitle profile from a rule file and turn it on. */
+export function addSubtitleProfile(label: string, config: import('../core/proofread/osos').OsosConfig) {
+  const name = label.trim();
+  if (!name) return;
+  if (name.toLowerCase() === 'off' || name.toLowerCase() === 'osos subs') {
+    toast(`“${name}” can’t be a profile.`);
+    return;
+  }
+  let created = '';
+  updateProject((p) => {
+    const profiles = p.settings.subtitleProfiles ?? [];
+    if (profiles.some((x) => x.label.toLowerCase() === name.toLowerCase())) return;
+    const id = profileSlug(name, ['osos', 'off', ...profiles.map((x) => x.id)]);
+    p.settings.subtitleProfiles = [...profiles, { id, label: name, config }];
+    p.settings.subtitleRules = id;
+    created = id;
+  });
+  if (!created) toast(`“${name}” is already a subtitle profile.`);
+  else void flushSave();
 }
 
 /** Which subtitle proofreading pass is on. "off" clears it. Does not edit the file. */
