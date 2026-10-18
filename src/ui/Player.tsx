@@ -254,16 +254,21 @@ export function Playbar({ version }: { version: Version }) {
       }
     }
     const picStart = tcToFrames(project.settings.pictureStartTC, timebase);
-    if (url && durationSec > 0) {
-      const start = tcToFrames(version.video?.startTC || project.settings.defaultVideoStartTC, timebase);
-      return { lo: start, hi: start + Math.round(durationSec * fps(version.rate)) };
+    const start = tcToFrames(version.video?.startTC || project.settings.defaultVideoStartTC, timebase);
+    const hasVideo = !!(url && durationSec > 0 && !Number.isNaN(start));
+    const videoEnd = hasVideo ? start + Math.round(durationSec * fps(version.rate)) : null;
+    // The file is one span on the timeline. Markers that fall outside it stay visible.
+    if (hasVideo && videoEnd !== null) {
+      lo = Math.min(lo, start);
+      hi = Math.max(hi, videoEnd);
     }
     if (!Number.isFinite(lo)) {
       lo = Number.isNaN(picStart) ? 0 : picStart;
       hi = lo + timebase * 60 * 30;
     }
-    if (version.seqStartFrame !== null) lo = Math.min(lo, version.seqStartFrame);
-    return { lo, hi: hi + timebase * 2 };
+    if (!hasVideo && version.seqStartFrame !== null) lo = Math.min(lo, version.seqStartFrame);
+    const pad = hasVideo && videoEnd !== null && hi <= videoEnd ? 0 : timebase * 2;
+    return { lo, hi: hi + pad };
   }, [project, version, url, durationSec, timebase]);
 
   const span = Math.max(1, range.hi - range.lo);

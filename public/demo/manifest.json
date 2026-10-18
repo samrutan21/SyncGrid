@@ -1,9 +1,10 @@
 {
-  "revision": 1,
+  "revision": 2,
   "project": "Skylab",
   "episode": "Fine Cut",
   "video": "Skylab_Fine_Cut_WIP_v1_261018.mp4",
-  "startTC": "",
+  "startTC": "00:00:00:00",
+  "pictureStartTC": "00:00:00:00",
   "archivalPrefixes": [],
   "versions": [
     {

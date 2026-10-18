@@ -34,6 +34,8 @@ interface DemoManifest {
   episode?: string;
   video?: string;
   startTC?: string;
+  /** Sequence timecode of picture start. An SRT that begins at 00:00:00 uses this. */
+  pictureStartTC?: string;
   archivalPrefixes?: string[];
   subtitleRules?: string;
   gfxCategories?: string;
@@ -67,9 +69,11 @@ export async function openDemo(): Promise<void> {
   } else {
     if (prevId) await deleteProject(prevId);
     await createProject(manifest.project?.trim() || 'Demo');
-    if (manifest.archivalPrefixes?.length) {
+    if (manifest.archivalPrefixes?.length || manifest.pictureStartTC || manifest.startTC) {
       updateProject((p) => {
-        p.settings.archivalPrefixes = manifest.archivalPrefixes!;
+        if (manifest.archivalPrefixes?.length) p.settings.archivalPrefixes = manifest.archivalPrefixes;
+        if (manifest.pictureStartTC) p.settings.pictureStartTC = manifest.pictureStartTC;
+        if (manifest.startTC) p.settings.defaultVideoStartTC = manifest.startTC;
       });
     }
     if (manifest.subtitleRules) setSubtitleRules(manifest.subtitleRules);
