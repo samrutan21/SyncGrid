@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<xmeml version="4">
+	<sequence id="sequence-1" TL.SQAudioVisibleBase="0" TL.SQVideoVisibleBase="0" TL.SQVisibleBaseTime="0" TL.SQAVDividerPosition="0.5" TL.SQHideShyTracks="0" TL.SQHeaderWidth="204" TL.SQDataTrackViewControlState="1" Monitor.ProgramZoomOut="167500373040000" Monitor.ProgramZoomIn="0" TL.SQTimePerPixel="0.77645422318125779" MZ.EditLine="90138720672000" MZ.Sequence.PreviewFrameSizeHeight="1080" MZ.Sequence.PreviewFrameSizeWidth="1920" MZ.Sequence.AudioTimeDisplayFormat="200" MZ.Sequence.PreviewRenderingClassID="1061109567" MZ.Sequence.PreviewRenderingPresetCodec="1634755443" MZ.Sequence.PreviewRenderingPresetPath="EncoderPresets/SequencePreview/795454d9-d3c2-429d-9474-923ab13b7018/QuickTime.epr" MZ.Sequence.PreviewUseMaxRenderQuality="false" MZ.Sequence.PreviewUseMaxBitDepth="false" MZ.Sequence.EditingModeGUID="795454d9-d3c2-429d-9474-923ab13b7018" MZ.Sequence.VideoTimeDisplayFormat="110" MZ.WorkOutPoint="15235011792000" MZ.WorkInPoint="0" explodedTracks="true">
+		<uuid>629a41c3-497e-4470-8a55-06e7a8255025</uuid>
+		<duration>0</duration>
+		<rate>
+			<timebase>24</timebase>
+			<ntsc>TRUE</ntsc>
+		</rate>
+		<name>Skylab_Fine_Cut_WIP_v1_261018_ARCHIVAL</name>
+		<media>
+			<video>
+				<format>
+					<samplecharacteristics>
+						<rate>
+							<timebase>24</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<codec>
+							<name>Apple ProRes 422</name>
+							<appspecificdata>
+								<appname>Final Cut Pro</appname>
+								<appmanufacturer>Apple Inc.</appmanufacturer>
+								<appversion>7.0</appversion>
+								<data>
+									<qtcodec>
+										<codecname>Apple ProRes 422</codecname>
+										<codectypename>Apple ProRes 422</codectypename>
+										<codectypecode>apcn</codectypecode>
+										<codecvendorcode>appl</codecvendorcode>
+										<spatialquality>1024</spatialquality>
+										<temporalquality>0</temporalquality>
+										<keyframerate>0</keyframerate>
+										<datarate>0</datarate>
+									</qtcodec>
+								</data>
+							</appspecificdata>
+						</codec>
+						<width>1920</width>
+						<height>1080</height>
+						<anamorphic>FALSE</anamorphic>
+						<pixelaspectratio>square</pixelaspectratio>
+						<fielddominance>none</fielddominance>
+						<colordepth>24</colordepth>
+					</samplecharacteristics>
+				</format>
+				<track TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1">
+					<clipitem id="clipitem-1">
+						<masterclipid>masterclip-1</masterclipid>
+						<name>NASA-F0001_SOLAR FOOTAGE.mp4</name>
+						<enabled>TRUE</enabled>
+						<duration>34736</duration>
+						<rate>
+							<timebase>24</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<start>12294</start>
+						<end>13195</end>
+						<in>12294</in>
+						<out>13195</out>
+						<pproTicksIn>130249815696000</pproTicksIn>
+						<pproTicksOut>139795535880000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<pixelaspectratio>square</pixelaspectratio>
+						<anamorphic>FALSE</anamorphic>
+						<file id="file-1">
+							<name>67134_Skylab_Space_Lab_vwr.mp4</name>
+							<pathurl>file://localhost/Volumes/Dylan4K/NEW%20JERSEY/SyncGrid/SKYLAB%20SPACE/67134_Skylab_Space_Lab_vwr.mp4</pathurl>
+							<rate>
+								<timebase>24</timebase>
+								<ntsc>TRUE</ntsc>
+							</rate>
+							<duration>34742</duration>
+							<timecode>
+								<rate>
+									<timebase>24</timebase>
+									<ntsc>TRUE</ntsc>
+								</rate>
+								<string>00:00:00:00</string>
+								<frame>0</frame>
+								<displayformat>NDF</displayformat>
+							</timecode>
+							<media>
+								<video>
+									<samplecharacteristics>
+										<rate>
+											<timebase>24</timebase>
+											<ntsc>TRUE</ntsc>
+										</rate>
+										<width>854</width>
+										<height>480</height>
+										<anamorphic>FALSE</anamorphic>
+										<pixelaspectratio>square</pixelaspectratio>
+										<fielddominance>none</fielddominance>
+									</samplecharacteristics>
+								</video>
+								<audio>
+									<samplecharacteristics>
+										<depth>16</depth>
+										<samplerate>44100</samplerate>
+									</samplecharacteristics>
+									<channelcount>2</channelcount>
+								</audio>
+							</media>
+						</file>
+						<filter>
+							<effect>
+								<name>Basic Motion</name>
+								<effectid>basic</effectid>
+								<effectcategory>motion</effectcategory>
+								<effecttype>motion</effecttype>
+								<mediatype>video</mediatype>
+								<pproBypass>false</pproBypass>
+								<parameter authoringApp="PremierePro">
+									<parameterid>scale</parameterid>
+									<name>Scale</name>
+									<valuemin>0</valuemin>
+									<valuemax>1000</valuemax>
+									<value>225</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rotation</parameterid>
+									<name>Rotation</name>
+									<valuemin>-8640</valuemin>
+									<valuemax>8640</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>center</parameterid>
+									<name>Center</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>centerOffset</parameterid>
+									<name>Anchor Point</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>antiflicker</parameterid>
+									<name>Anti-flicker Filter</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>1.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>leftcrop</parameterid>
+									<name>Left</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>topcrop</parameterid>
+									<name>Top</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rightcrop</parameterid>
+									<name>Right</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>bottomcrop</parameterid>
+									<name>Bottom</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+							</effect>
+						</filter>
+						<logginginfo>
+							<description></description>
+							<scene></scene>
+							<shottake></shottake>
+							<lognote></lognote>
+							<good></good>
+							<originalvideofilename></originalvideofilename>
+							<originalaudiofilename></originalaudiofilename>
+						</logginginfo>
+						<colorinfo>
+							<lut></lut>
+							<lut1></lut1>
+							<asc_sop></asc_sop>
+							<asc_sat></asc_sat>
+							<lut2></lut2>
+						</colorinfo>
+						<labels>
+							<label2>Iris</label2>
+						</labels>
+					</clipitem>
+					<clipitem id="clipitem-2">
+						<masterclipid>masterclip-1</masterclipid>
+						<name>NASA-F0002_CORONA_SHOT.mp4</name>
+						<enabled>TRUE</enabled>
+						<duration>34736</duration>
+						<rate>
+							<timebase>24</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<start>13636</start>
+						<end>14026</end>
+						<in>13636</in>
+						<out>14026</out>
+						<pproTicksIn>144467747424000</pproTicksIn>
+						<pproTicksOut>148599635184000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<file id="file-1"/>
+						<filter>
+							<effect>
+								<name>Basic Motion</name>
+								<effectid>basic</effectid>
+								<effectcategory>motion</effectcategory>
+								<effecttype>motion</effecttype>
+								<mediatype>video</mediatype>
+								<pproBypass>false</pproBypass>
+								<parameter authoringApp="PremierePro">
+									<parameterid>scale</parameterid>
+									<name>Scale</name>
+									<valuemin>0</valuemin>
+									<valuemax>1000</valuemax>
+									<value>225</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rotation</parameterid>
+									<name>Rotation</name>
+									<valuemin>-8640</valuemin>
+									<valuemax>8640</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>center</parameterid>
+									<name>Center</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>centerOffset</parameterid>
+									<name>Anchor Point</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>antiflicker</parameterid>
+									<name>Anti-flicker Filter</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>1.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>leftcrop</parameterid>
+									<name>Left</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>topcrop</parameterid>
+									<name>Top</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rightcrop</parameterid>
+									<name>Right</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>bottomcrop</parameterid>
+									<name>Bottom</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+							</effect>
+						</filter>
+						<logginginfo>
+							<description></description>
+							<scene></scene>
+							<shottake></shottake>
+							<lognote></lognote>
+							<good></good>
+							<originalvideofilename></originalvideofilename>
+							<originalaudiofilename></originalaudiofilename>
+						</logginginfo>
+						<colorinfo>
+							<lut></lut>
+							<lut1></lut1>
+							<asc_sop></asc_sop>
+							<asc_sat></asc_sat>
+							<lut2></lut2>
+						</colorinfo>
+						<labels>
+							<label2>Iris</label2>
+						</labels>
+					</clipitem>
+					<clipitem id="clipitem-3">
+						<masterclipid>masterclip-1</masterclipid>
+						<name>NASA-F0003_FLARES AND COMETS.mp4</name>
+						<enabled>TRUE</enabled>
+						<duration>34736</duration>
+						<rate>
+							<timebase>24</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<start>14316</start>
+						<end>15269</end>
+						<in>14316</in>
+						<out>15269</out>
+						<pproTicksIn>151672064544000</pproTicksIn>
+						<pproTicksOut>161768703096000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<file id="file-1"/>
+						<filter>
+							<effect>
+								<name>Basic Motion</name>
+								<effectid>basic</effectid>
+								<effectcategory>motion</effectcategory>
+								<effecttype>motion</effecttype>
+								<mediatype>video</mediatype>
+								<pproBypass>false</pproBypass>
+								<parameter authoringApp="PremierePro">
+									<parameterid>scale</parameterid>
+									<name>Scale</name>
+									<valuemin>0</valuemin>
+									<valuemax>1000</valuemax>
+									<value>225</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rotation</parameterid>
+									<name>Rotation</name>
+									<valuemin>-8640</valuemin>
+									<valuemax>8640</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>center</parameterid>
+									<name>Center</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>centerOffset</parameterid>
+									<name>Anchor Point</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>antiflicker</parameterid>
+									<name>Anti-flicker Filter</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>1.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>leftcrop</parameterid>
+									<name>Left</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>topcrop</parameterid>
+									<name>Top</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rightcrop</parameterid>
+									<name>Right</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>bottomcrop</parameterid>
+									<name>Bottom</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+							</effect>
+						</filter>
+						<logginginfo>
+							<description></description>
+							<scene></scene>
+							<shottake></shottake>
+							<lognote></lognote>
+							<good></good>
+							<originalvideofilename></originalvideofilename>
+							<originalaudiofilename></originalaudiofilename>
+						</logginginfo>
+						<colorinfo>
+							<lut></lut>
+							<lut1></lut1>
+							<asc_sop></asc_sop>
+							<asc_sat></asc_sat>
+							<lut2></lut2>
+						</colorinfo>
+						<labels>
+							<label2>Iris</label2>
+						</labels>
+					</clipitem>
+					<clipitem id="clipitem-4">
+						<masterclipid>masterclip-1</masterclipid>
+						<name>NASA-F0003_FLARES AND COMETS.mp4</name>
+						<enabled>TRUE</enabled>
+						<duration>34736</duration>
+						<rate>
+							<timebase>24</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<start>15595</start>
+						<end>15810</end>
+						<in>15595</in>
+						<out>15810</out>
+						<pproTicksIn>165222537480000</pproTicksIn>
+						<pproTicksOut>167500373040000</pproTicksOut>
+						<alphatype>none</alphatype>
+						<file id="file-1"/>
+						<filter>
+							<effect>
+								<name>Basic Motion</name>
+								<effectid>basic</effectid>
+								<effectcategory>motion</effectcategory>
+								<effecttype>motion</effecttype>
+								<mediatype>video</mediatype>
+								<pproBypass>false</pproBypass>
+								<parameter authoringApp="PremierePro">
+									<parameterid>scale</parameterid>
+									<name>Scale</name>
+									<valuemin>0</valuemin>
+									<valuemax>1000</valuemax>
+									<value>225</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rotation</parameterid>
+									<name>Rotation</name>
+									<valuemin>-8640</valuemin>
+									<valuemax>8640</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>center</parameterid>
+									<name>Center</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>centerOffset</parameterid>
+									<name>Anchor Point</name>
+									<value>
+										<horiz>0</horiz>
+										<vert>0</vert>
+									</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>antiflicker</parameterid>
+									<name>Anti-flicker Filter</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>1.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>leftcrop</parameterid>
+									<name>Left</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>topcrop</parameterid>
+									<name>Top</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>rightcrop</parameterid>
+									<name>Right</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+								<parameter authoringApp="PremierePro">
+									<parameterid>bottomcrop</parameterid>
+									<name>Bottom</name>
+									<valuemin>0.0</valuemin>
+									<valuemax>100.0</valuemax>
+									<value>0</value>
+								</parameter>
+							</effect>
+						</filter>
+						<logginginfo>
+							<description></description>
+							<scene></scene>
+							<shottake></shottake>
+							<lognote></lognote>
+							<good></good>
+							<originalvideofilename></originalvideofilename>
+							<originalaudiofilename></originalaudiofilename>
+						</logginginfo>
+						<colorinfo>
+							<lut></lut>
+							<lut1></lut1>
+							<asc_sop></asc_sop>
+							<asc_sat></asc_sat>
+							<lut2></lut2>
+						</colorinfo>
+						<labels>
+							<label2>Iris</label2>
+						</labels>
+					</clipitem>
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+				<track TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+				</track>
+			</video>
+			<audio>
+				<numOutputChannels>2</numOutputChannels>
+				<format>
+					<samplecharacteristics>
+						<depth>16</depth>
+						<samplerate>48000</samplerate>
+					</samplecharacteristics>
+				</format>
+				<outputs>
+					<group>
+						<index>1</index>
+						<numchannels>1</numchannels>
+						<downmix>0</downmix>
+						<channel>
+							<index>1</index>
+						</channel>
+					</group>
+					<group>
+						<index>2</index>
+						<numchannels>1</numchannels>
+						<downmix>0</downmix>
+						<channel>
+							<index>2</index>
+						</channel>
+					</group>
+				</outputs>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>1</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>2</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>1</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>2</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>1</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>2</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="0" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>1</outputchannelindex>
+				</track>
+				<track TL.SQTrackAudioKeyframeStyle="0" TL.SQTrackShy="0" TL.SQTrackExpandedHeight="41" TL.SQTrackExpanded="0" MZ.TrackTargeted="1" PannerCurrentValue="0.5" PannerIsInverted="true" PannerStartKeyframe="-91445760000000000,0.5,0,0,0,0,0,0" PannerName="Balance" currentExplodedTrackIndex="1" totalExplodedTrackCount="2" premiereTrackType="Stereo">
+					<enabled>TRUE</enabled>
+					<locked>FALSE</locked>
+					<outputchannelindex>2</outputchannelindex>
+				</track>
+			</audio>
+		</media>
+		<timecode>
+			<rate>
+				<timebase>24</timebase>
+				<ntsc>TRUE</ntsc>
+			</rate>
+			<string>00:00:00:00</string>
+			<frame>0</frame>
+			<displayformat>NDF</displayformat>
+		</timecode>
+		<labels>
+			<label2>Forest</label2>
+		</labels>
+		<logginginfo>
+			<description></description>
+			<scene></scene>
+			<shottake></shottake>
+			<lognote></lognote>
+			<good></good>
+			<originalvideofilename></originalvideofilename>
+			<originalaudiofilename></originalaudiofilename>
+		</logginginfo>
+	</sequence>
+</xmeml>

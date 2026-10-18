@@ -1,9 +1,30 @@
 {
   "revision": 1,
-  "project": "Demo",
-  "episode": "Episode 1",
-  "video": "",
+  "project": "Skylab",
+  "episode": "Fine Cut",
+  "video": "Skylab_Fine_Cut_WIP_v1_261018.mp4",
   "startTC": "",
   "archivalPrefixes": [],
-  "versions": []
+  "versions": [
+    {
+      "label": "v1",
+      "slots": {
+        "gfx": {
+          "xml": "Skylab_Fine_Cut_WIP_v1_261018_GFX.xml",
+          "edl": "Skylab_Fine_Cut_WIP_v1_261018_GFX.edl"
+        },
+        "music": {
+          "xml": "Skylab_Fine_Cut_WIP_v1_261018_CUE SHEET.xml",
+          "edl": "Skylab_Fine_Cut_WIP_v1_261018_CUE SHEET.edl"
+        },
+        "archival": {
+          "xml": "Skylab_Fine_Cut_WIP_v1_261018_ARCHIVAL.xml",
+          "edl": "Skylab_Fine_Cut_WIP_v1_261018_ARCHIVAL.edl"
+        },
+        "subs": {
+          "srt": "Skylab_Fine_Cut_WIP_v1_261018_SUBTITLES.srt"
+        }
+      }
+    }
+  ]
 }
