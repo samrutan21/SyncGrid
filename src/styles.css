@@ -145,6 +145,11 @@ select.input { padding-right: 24px; }
 .badge-check-warn { background: rgba(242, 179, 61, .16); color: var(--warn); }
 .rules-select { height: 26px; width: auto; max-width: 124px; padding: 0 22px 0 8px; font-size: 12px; }
 .rules-select.wide { max-width: 196px; }
+.rules-row { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.rules-help { font-size: 11px; white-space: nowrap; }
+.rule-help { display: flex; flex-direction: column; gap: 10px; }
+.rule-help p { margin: 0; }
+.rule-sample { margin: 0; padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-sm); font: 12px/1.5 var(--mono); overflow: auto; }
 .badge-type { background: transparent; color: var(--muted); font-weight: 550; padding: 0 2px; }
 .check-file { padding: 6px 12px 8px; }
 .check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }

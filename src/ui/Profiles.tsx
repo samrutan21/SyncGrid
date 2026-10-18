@@ -1,9 +1,10 @@
 import { useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { GFX_CATEGORY_SETS } from '../core/gfxCategories';
 import { parseRuleConfig, SUBTITLE_RULE_SETS } from '../core/proofread/rules';
 import { addGfxProfile, addSubtitleProfile, app, setGfxCategories, setSubtitleRules, toast } from '../state/app';
 import { useStore } from '../state/createStore';
-import { PromptModal } from './common';
+import { Button, Modal, PromptModal } from './common';
 
 const NONE: never[] = [];
 
@@ -50,13 +51,21 @@ export function GfxProfileSelect({ wide }: { wide?: boolean }) {
   );
 }
 
+const RULE_SAMPLE = `{
+  "names_people": ["Ada Lovelace", "Lovelace"],
+  "names_teams": ["Skylab"],
+  "names_places_orgs": ["Houston", "NASA"]
+}`;
+
 /** Subtitle profile menu. A rule file uses the same shape as the OSOS config. */
 export function SubtitleProfileSelect() {
   const id = useStore(app, (s) => s.project?.settings.subtitleRules) || 'off';
   const custom = useStore(app, (s) => s.project?.settings.subtitleProfiles) ?? NONE;
   const file = useRef<HTMLInputElement>(null);
+  const [help, setHelp] = useState(false);
   return (
     <>
+      <span className="rules-row">
       <select
         className="input rules-select"
         aria-label="Subtitle rules"
@@ -79,6 +88,10 @@ export function SubtitleProfileSelect() {
         ))}
         <option value="__upload">Upload rules…</option>
       </select>
+      <button type="button" className="linkish rules-help" onClick={() => setHelp(true)}>
+        Instructions
+      </button>
+      </span>
       <input
         ref={file}
         type="file"
@@ -105,6 +118,41 @@ export function SubtitleProfileSelect() {
           addSubtitleProfile(name, config);
         }}
       />
+      {help &&
+        createPortal(
+          <Modal
+            title="Subtitle rule file"
+            onClose={() => setHelp(false)}
+            footer={
+              <Button variant="ghost" onClick={() => setHelp(false)}>
+                Close
+              </Button>
+            }
+          >
+            <div className="rule-help">
+              <p>
+                A subtitle profile is a <span className="mono">.json</span> file. Choose <span className="mono">Upload rules…</span> and pick it. The file
+                name becomes the profile name: <span className="mono">Skylab_subs.json</span> shows up as “Skylab subs”.
+              </p>
+              <p>
+                The file is one JSON object, and it needs at least one of these lists. <span className="mono">names_people</span>,{' '}
+                <span className="mono">names_teams</span>, and <span className="mono">names_places_orgs</span> are names to recognize. Include the full name
+                and any short form. <span className="mono">homophone_sets</span> is groups of words that get confused, such as{' '}
+                <span className="mono">["their", "there", "they're"]</span>.
+              </p>
+              <p>A short file is enough:</p>
+              <pre className="rule-sample">{RULE_SAMPLE}</pre>
+              <p>
+                Lists you leave out are filled in from OSOS SUBS, except a name list you leave out, which stays empty. You can also set{' '}
+                <span className="mono">allowed_accented</span>, <span className="mono">allowed_curly</span>, <span className="mono">profanity_leave_as_is</span>,{' '}
+                <span className="mono">number_words</span>, <span className="mono">ellipsis_house_style</span>, and{' '}
+                <span className="mono">flag_apostrophe_consistency</span>.
+              </p>
+              <p>The punctuation and spelling checks stay the same. This file only supplies the lists they use.</p>
+            </div>
+          </Modal>,
+          document.body,
+        )}
     </>
   );
 }
