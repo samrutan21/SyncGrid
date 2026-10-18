@@ -1,14 +1,17 @@
-import { useRef, useState } from 'react';
-import { customGfxProfiles, GFX_CATEGORY_SETS } from '../core/gfxCategories';
+import { useMemo, useRef, useState } from 'react';
+import { GFX_CATEGORY_SETS } from '../core/gfxCategories';
 import { parseRuleConfig, SUBTITLE_RULE_SETS } from '../core/proofread/rules';
 import { addGfxProfile, addSubtitleProfile, app, setGfxCategories, setSubtitleRules, toast } from '../state/app';
 import { useStore } from '../state/createStore';
 import { PromptModal } from './common';
 
+const NONE: never[] = [];
+
 /** GFX profile menu. "New profile…" asks for a name, then tags are added on the sheet. */
 export function GfxProfileSelect({ wide }: { wide?: boolean }) {
   const id = useStore(app, (s) => s.project?.settings.gfxCategories) || 'off';
-  const custom = useStore(app, (s) => (s.project ? customGfxProfiles(s.project.settings) : []));
+  const saved = useStore(app, (s) => s.project?.settings.gfxProfiles);
+  const custom = useMemo(() => (saved ?? NONE).filter((p) => p.id !== 'osos'), [saved]);
   const [naming, setNaming] = useState(false);
   return (
     <>
@@ -50,7 +53,7 @@ export function GfxProfileSelect({ wide }: { wide?: boolean }) {
 /** Subtitle profile menu. A rule file uses the same shape as the OSOS config. */
 export function SubtitleProfileSelect() {
   const id = useStore(app, (s) => s.project?.settings.subtitleRules) || 'off';
-  const custom = useStore(app, (s) => s.project?.settings.subtitleProfiles ?? []);
+  const custom = useStore(app, (s) => s.project?.settings.subtitleProfiles) ?? NONE;
   const file = useRef<HTMLInputElement>(null);
   return (
     <>

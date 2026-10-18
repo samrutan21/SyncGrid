@@ -34,13 +34,10 @@ export function gfxTypesOf(settings: ProjectSettings): GfxType[] | null {
   if (!id || id === 'off') return null;
   if (settings.gfxTypes) return settings.gfxTypes;
   if (id === 'osos') return OSOS_GFX_TYPES;
-  return settings.gfxProfiles?.find((p) => p.id === id)?.types ?? [];
+  return settings.gfxProfiles?.find((p) => p.id === id)?.types ?? EMPTY_TYPES;
 }
 
-/** Profiles to show under the built-in OSOS set. */
-export function customGfxProfiles(settings: ProjectSettings): { id: string; label: string }[] {
-  return (settings.gfxProfiles ?? []).filter((p) => p.id !== 'osos').map((p) => ({ id: p.id, label: p.label }));
-}
+const EMPTY_TYPES: GfxType[] = [];
 
 export function gfxTypeLabel(item: Item): string {
   const v = item.values[GFX_TYPE_COL];
