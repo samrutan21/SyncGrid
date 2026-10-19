@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   addEpisode,
   addVersion,
@@ -6,6 +6,7 @@ import {
   closeProject,
   currentEpisode,
   deleteEpisode,
+  moveCategory,
   renameEpisode,
   selectEpisode,
   selectVersion,
@@ -29,6 +30,9 @@ export function TopBar() {
   const hasVideo = useStore(app, (s) => (version ? !!s.videoUrls[version.id] : false));
   const ep = currentEpisode();
   const [prompt, setPrompt] = useState<null | 'episode' | 'renameEpisode'>(null);
+  const [over, setOver] = useState<string | null>(null);
+  const dragKey = useRef<string | null>(null);
+  const dragged = useRef(false);
 
   return (
     <header className="topbar">
@@ -121,11 +125,41 @@ export function TopBar() {
             return (
               <button
                 key={c.key}
-                className={`cat-toggle ${on ? 'is-on' : ''}`}
+                draggable
+                className={`cat-toggle ${on ? 'is-on' : ''} ${over === c.key ? 'is-drop' : ''}`}
                 style={cssVars({ '--c': c.color })}
                 aria-pressed={on}
-                onClick={() => toggleCategory(c.key)}
-                title={on ? `Hide ${c.label}` : `Show ${c.label}`}
+                title={`${on ? `Hide ${c.label}` : `Show ${c.label}`}. Drag to reorder.`}
+                onClick={() => {
+                  if (dragged.current) {
+                    dragged.current = false;
+                    return;
+                  }
+                  toggleCategory(c.key);
+                }}
+                onDragStart={(e) => {
+                  dragKey.current = c.key;
+                  dragged.current = false;
+                  e.dataTransfer.effectAllowed = 'move';
+                  e.dataTransfer.setData('text/plain', c.key);
+                }}
+                onDragOver={(e) => {
+                  if (!dragKey.current || dragKey.current === c.key) return;
+                  e.preventDefault();
+                  if (over !== c.key) setOver(c.key);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const key = dragKey.current;
+                  dragKey.current = null;
+                  setOver(null);
+                  if (key) moveCategory(key, c.key);
+                }}
+                onDragEnd={() => {
+                  dragged.current = true;
+                  dragKey.current = null;
+                  setOver(null);
+                }}
               >
                 <Swatch color={c.color} />
                 {c.label}

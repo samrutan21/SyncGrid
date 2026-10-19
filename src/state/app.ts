@@ -1205,6 +1205,22 @@ export function toggleCategory(key: string) {
   });
 }
 
+/** Drag a tracker in front of another. Sidebars, the sheet, and the playbar follow. */
+export function moveCategory(key: string, beforeKey: string) {
+  if (!key || key === beforeKey) return;
+  const cats = app.get().project?.categories ?? [];
+  const from = cats.findIndex((c) => c.key === key);
+  if (from < 0 || cats.findIndex((c) => c.key === beforeKey) < 0) return;
+  updateProject((p) => {
+    const item = p.categories.splice(from, 1)[0];
+    const to = p.categories.findIndex((c) => c.key === beforeKey);
+    if (item && to >= 0) p.categories.splice(to, 0, item);
+  });
+  const order = app.get().project?.categories.map((c) => c.key) ?? [];
+  app.set((s) => ({ enabled: order.filter((k) => s.enabled.includes(k)) }));
+  void flushSave();
+}
+
 export function select(cat: string, id: string | null) {
   app.set({ selected: id ? { cat, id } : null });
 }
