@@ -1,4 +1,4 @@
-# Cutsheet
+# SyncGrid
 
 A timeline-aware tracker for **GFX, music cue sheets and archival clearances**, built from your NLE's XML/EDL exports. Watch the cut with every graphic, cue and archival clip marked on the playbar, take notes per item, compare versions, and export the trackers as CSV or PDF.
 
@@ -112,7 +112,7 @@ Drop, paste (⌘V after a screenshot) or browse images/PDFs — releases, emails
 
 ### Backup / sharing
 
-Data lives in Chrome's storage for `localhost:5173` on this computer. **Export → Download backup** saves the whole project (notes, evidence, optionally screenshots) as a `.cutsheet.zip`; **Import backup** on the home screen restores it on any machine. Video files are never included — each person points to their own copy.
+Data lives in Chrome's storage for `localhost:5173` on this computer. **Export → Download backup** saves the whole project (notes, evidence, optionally screenshots) as a `.syncgrid.zip`; **Import backup** on the home screen restores it on any machine. A backup saved before the rename still imports. Video files are never included — each person points to their own copy.
 
 Clearing Chrome's site data for localhost deletes projects, so keep backups of anything important.
 

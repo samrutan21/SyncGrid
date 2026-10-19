@@ -96,7 +96,7 @@ export async function runExport(req: ExportRequest): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Project backup (.cutsheet.zip)                                      */
+/* Project backup (.syncgrid.zip)                                      */
 /* ------------------------------------------------------------------ */
 
 export async function exportBackup(project: Project, includeScreenshots: boolean): Promise<string> {
@@ -114,9 +114,9 @@ export async function exportBackup(project: Project, includeScreenshots: boolean
   }
   zip.file('project.json', JSON.stringify(project));
   zip.file('blobs.json', JSON.stringify(manifest));
-  zip.file('README.txt', 'Cutsheet project backup. Import it from the Cutsheet home screen → Import backup.\n');
+  zip.file('README.txt', 'SyncGrid project backup. Import it from the SyncGrid home screen → Import backup.\n');
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
-  const name = `${fileSafe(project.name)}_${new Date().toISOString().slice(0, 10)}.cutsheet.zip`;
+  const name = `${fileSafe(project.name)}_${new Date().toISOString().slice(0, 10)}.syncgrid.zip`;
   download(blob, name);
   return name;
 }
@@ -125,7 +125,7 @@ export async function importBackup(file: File): Promise<Project> {
   if (file.size > 2 * 1024 * 1024 * 1024) throw new Error('Backup is larger than 2 GB.');
   const zip = await JSZip.loadAsync(file);
   const pj = zip.file('project.json');
-  if (!pj) throw new Error('Not a Cutsheet backup (project.json missing).');
+  if (!pj) throw new Error('Not a SyncGrid backup (project.json missing).');
   const raw = await pj.async('string');
   const parsed = JSON.parse(raw) as Project;
   if (!parsed || parsed.schemaVersion !== 1 || !Array.isArray(parsed.episodes) || !Array.isArray(parsed.categories)) {

@@ -42,7 +42,7 @@ interface DemoManifest {
   versions?: { label: string; slots?: Record<string, DemoSlot>; video?: string; startTC?: string }[];
 }
 
-const KEY = 'cutsheet:demo';
+const KEY = 'syncgrid:demo';
 
 async function loadManifest(): Promise<DemoManifest | null> {
   try {

@@ -37,10 +37,85 @@ export interface Store {
 /* IndexedDB implementation                                            */
 /* ------------------------------------------------------------------ */
 
-const DB_NAME = 'cutsheet';
+const LEGACY_DB_NAME = 'cutsheet';
+const DB_NAME = 'syncgrid';
 const DB_VERSION = 1;
 const STORES = ['projects', 'blobs', 'handles', 'templates'] as const;
 type StoreName = (typeof STORES)[number];
+
+/**
+ * Copy a library saved under the previous name, then remove that database.
+ * Runs once. Records already stored under the new name are left in place.
+ */
+export async function migrateLegacyDatabase(): Promise<void> {
+  if (typeof indexedDB === 'undefined' || !indexedDB.databases) return;
+  const names = (await indexedDB.databases()).map((d) => d.name);
+  if (!names.includes(LEGACY_DB_NAME)) return;
+  const legacy = await openNamed(LEGACY_DB_NAME);
+  let current: IDBDatabase | null = null;
+  try {
+    const saved = await Promise.all(STORES.map(async (name) => [name, await readStore(legacy, name)] as const));
+    if (saved.some(([, rows]) => rows.length)) {
+      current = await openDB();
+      for (const [name, rows] of saved) await writeMissing(current, name, rows);
+    }
+  } finally {
+    legacy.close();
+    current?.close();
+  }
+  await deleteNamed(LEGACY_DB_NAME);
+}
+
+function openNamed(name: string): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(name);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function deleteNamed(name: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.deleteDatabase(name);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+    req.onblocked = () => resolve();
+  });
+}
+
+function readStore(db: IDBDatabase, name: StoreName): Promise<{ key: IDBValidKey; value: unknown }[]> {
+  if (!db.objectStoreNames.contains(name)) return Promise.resolve([]);
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(name, 'readonly');
+    const store = tx.objectStore(name);
+    const keysReq = store.getAllKeys();
+    const valuesReq = store.getAll();
+    tx.oncomplete = () => resolve(keysReq.result.map((key, i) => ({ key, value: valuesReq.result[i] })));
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function writeMissing(db: IDBDatabase, name: StoreName, rows: { key: IDBValidKey; value: unknown }[]): Promise<void> {
+  if (!rows.length || !db.objectStoreNames.contains(name)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(name, 'readwrite');
+    const store = tx.objectStore(name);
+    let i = 0;
+    const step = () => {
+      if (i >= rows.length) return;
+      const row = rows[i++];
+      const found = store.getKey(row.key);
+      found.onsuccess = () => {
+        if (found.result === undefined) store.put(row.value, row.key);
+        step();
+      };
+      found.onerror = () => reject(found.error);
+    };
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    step();
+  });
+}
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {

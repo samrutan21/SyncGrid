@@ -19,7 +19,7 @@ import type {
 import { buildSubtitleItems, firstCueFrame, srtZeroFrame } from '../core/parsers/srt';
 import { readBurnedStartTC } from '../media/burnedTimecode';
 import { readContainerStartTC } from '../media/fileTimecode';
-import { blobKeys, store, type ProjectSummary } from '../storage/store';
+import { blobKeys, migrateLegacyDatabase, store, type ProjectSummary } from '../storage/store';
 import { createStore } from './createStore';
 
 /* ------------------------------------------------------------------ */
@@ -178,11 +178,32 @@ function findVersion(p: Project, versionId: string): Version | undefined {
 /* Projects                                                            */
 /* ------------------------------------------------------------------ */
 
+const LAST_PROJECT = 'syncgrid:lastProject';
+
+/** Move settings saved under the previous name. Existing values win. */
+function migrateLegacyLocalStorage() {
+  const pairs = [
+    ['cutsheet:lastProject', LAST_PROJECT],
+    ['cutsheet:demo', 'syncgrid:demo'],
+  ] as const;
+  try {
+    for (const [from, to] of pairs) {
+      const prev = localStorage.getItem(from);
+      if (prev !== null && localStorage.getItem(to) === null) localStorage.setItem(to, prev);
+      localStorage.removeItem(from);
+    }
+  } catch {
+    /* private mode */
+  }
+}
+
 export async function init() {
   try {
+    migrateLegacyLocalStorage();
+    await migrateLegacyDatabase();
     const projects = await store.listProjects();
     app.set({ projects, ready: true });
-    const last = safeGet('cutsheet:lastProject');
+    const last = safeGet(LAST_PROJECT);
     if (last && projects.some((p) => p.id === last)) await openProject(last);
   } catch (e) {
     app.set({ ready: true });
@@ -254,7 +275,7 @@ export async function openProject(id: string) {
     filters: {},
     view: 'review',
   });
-  safeSet('cutsheet:lastProject', id);
+  safeSet(LAST_PROJECT, id);
   for (const e of p.episodes) {
     for (const ver of e.versions) {
       const keys = p.categories.filter((c) => subtitlePlacementIsStale(ver, c)).map((c) => c.key);
@@ -287,7 +308,7 @@ export async function closeProject() {
   await flushSave();
   revokeVideos();
   app.set({ project: null, episodeId: null, versionId: null, selected: null });
-  safeSet('cutsheet:lastProject', null);
+  safeSet(LAST_PROJECT, null);
   await refreshProjects();
 }
 
@@ -965,7 +986,7 @@ export async function pickVideo(versionId: string, fallbackFile?: File) {
       const [h] = await (window as PickerWindow).showOpenFilePicker!({
         types: [{ description: 'Video', accept: { 'video/*': ['.mp4', '.m4v', '.mov', '.webm'] } }],
         excludeAcceptAllOption: false,
-        id: 'cutsheet-video',
+        id: 'syncgrid-video',
       });
       await store.putHandle(versionId, h);
       file = await h.getFile();

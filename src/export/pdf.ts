@@ -31,8 +31,8 @@ export interface PdfMeta {
 export async function buildPDF(tables: ExportTable[], meta: PdfMeta): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   doc.setTitle(`${meta.project} · ${meta.episode} · ${meta.version}`);
-  doc.setProducer('Cutsheet');
-  doc.setCreator('Cutsheet');
+  doc.setProducer('SyncGrid');
+  doc.setCreator('SyncGrid');
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const images = new Map<string, PDFImage | null>();

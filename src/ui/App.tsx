@@ -209,7 +209,7 @@ function Home() {
         <div className="home-brand">
           <span className="brand-mark lg" aria-hidden="true" />
           <div>
-            <h1>Cutsheet</h1>
+            <h1>SyncGrid</h1>
             <p className="muted">GFX, cue sheet and archival tracking from your timeline’s XML/EDL — on picture, across versions.</p>
           </div>
         </div>

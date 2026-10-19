@@ -1,5 +1,5 @@
 {
-  "name": "cutsheet",
+  "name": "syncgrid",
   "private": true,
   "version": "1.0.0",
   "description": "Timeline-aware GFX, music cue and archival tracker built from XML/EDL exports.",
