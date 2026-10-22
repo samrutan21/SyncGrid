@@ -77,3 +77,6 @@ public/sample-data/
 # The public demo is the one place episode files may be committed.
 !public/demo/
 !public/demo/**
+
+# Local project profiles. Private work files; never commit or push.
+/profiles/

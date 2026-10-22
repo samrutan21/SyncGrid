@@ -26,7 +26,11 @@ export function itemTitle(item: Item, cat: CategoryConfig): string {
 }
 
 export function itemSubtitle(item: Item, cat: CategoryConfig): string {
-  if (cat.grouping === 'music') return [item.auto.artist, item.auto.library || (item.values.library as string)].filter(Boolean).join(' · ');
+  if (cat.grouping === 'music') {
+    const typed = item.values.artist;
+    const artist = typeof typed === 'string' && typed.trim() ? typed : item.auto.artist;
+    return [artist, item.auto.library || (item.values.library as string)].filter(Boolean).join(' · ');
+  }
   if (cat.extractArchivalIds) {
     const src = item.srcIn ? `${item.srcIn} – ${item.srcOut}` : '';
     return [item.auto.usage, item.auto.archivalId ? stripExtension(item.auto.fileName ?? '') : '', src].filter(Boolean).join(' · ');

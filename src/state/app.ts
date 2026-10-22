@@ -1,4 +1,4 @@
-import { defaultCategories, defaultSettings, ensureSubtitles } from '../core/config/defaults';
+import { defaultCategories, defaultSettings, ensureSubtitles, migrateArtistColumn, migrateMusicCueColumns } from '../core/config/defaults';
 import { OSOS_GFX_TYPES, reorderGfxTypes, syncGfxColumns, type GfxType } from '../core/gfxCategories';
 import { carryByShot, carryValues } from '../core/diff';
 import { isDismissed, moveEdge } from '../core/edits';
@@ -258,7 +258,9 @@ export async function openProject(id: string) {
   await flushSave();
   const p = await store.loadProject(id);
   if (!p) return;
-  if (ensureSubtitles(p.categories) || syncGfxColumns(p.categories, p.settings)) await store.saveProject(p);
+  const cueColumnsChanged = migrateMusicCueColumns(p);
+  const artistColumnChanged = migrateArtistColumn(p);
+  if (ensureSubtitles(p.categories) || syncGfxColumns(p.categories, p.settings) || cueColumnsChanged || artistColumnChanged) await store.saveProject(p);
   revokeVideos();
   const ep = p.episodes[0];
   const v = ep?.versions[ep.versions.length - 1];
@@ -863,6 +865,7 @@ export function addItem(versionId: string, catKey: string): string | null {
       flags: [],
       values: {},
     };
+    applyPrefill(cat, [item]);
     const list = v.items[catKey] ?? [];
     list.push(item);
     list.sort((a, b) => a.recIn - b.recIn || a.recOut - b.recOut);
@@ -884,7 +887,13 @@ export function renameItem(versionId: string, catKey: string, itemId: string, na
     it.name = trimmed;
     it.auto.clipName = trimmed;
     it.auto.fileName = trimmed;
-    if (cat.grouping === 'music') it.auto.cueTitle = trimmed;
+    if (cat.grouping === 'music') {
+      const previous = it.auto.cueTitle;
+      it.auto.cueTitle = trimmed;
+      const cue = cat.columns.find((col) => col.id === 'cueName');
+      const current = it.values.cueName;
+      if (cue?.prefill === 'cueTitle' && (current === undefined || current === '' || current === previous)) it.values.cueName = trimmed;
+    }
     if (cat.extractArchivalIds) it.auto.archivalId = trimmed;
     if (it.segments[0]) it.segments[0].name = trimmed;
   });
@@ -1212,6 +1221,8 @@ export async function saveTemplate(name: string) {
 export function applyTemplate(t: ColumnTemplate) {
   updateProject((p) => {
     p.categories = structuredClone(t.categories);
+    migrateMusicCueColumns(p);
+    migrateArtistColumn(p);
   });
   app.set({ enabled: t.categories.map((c) => c.key) });
   reprocessAll();

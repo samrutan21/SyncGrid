@@ -1,4 +1,4 @@
-import type { CategoryConfig, ColumnDef, ProjectSettings } from '../types';
+import type { CategoryConfig, ColumnDef, Item, ProjectSettings } from '../types';
 
 /**
  * Default categories and columns. These are only starting points: every
@@ -51,9 +51,9 @@ export function defaultCategories(): CategoryConfig[] {
         c('recOut', 'TC Out', 'auto', { auto: 'recOut', width: 1.1 }),
         c('duration', 'Duration (min:sec)', 'auto', { auto: 'durationMinSec', width: 0.8 }),
         c('description', 'Description', 'longtext', { width: 1.8 }),
-        c('tempCue', 'Temp Cue Name', 'auto', { auto: 'cueTitle', width: 1.6 }),
-        c('artist', 'Artist', 'auto', { auto: 'artist', width: 1.2 }),
-        c('cueName', 'Cue Name', 'text', { width: 1.6 }),
+        c('tempCue', 'Temp Cue Name', 'text', { width: 1.6 }),
+        c('artist', 'Artist', 'combo', { prefill: 'artist', width: 1.2 }),
+        c('cueName', 'Cue Name', 'text', { prefill: 'cueTitle', width: 1.6 }),
         c('cueSummary', 'Cue Summary', 'longtext', { width: 1.8 }),
         c('library', 'Cue Library Used', 'combo', { prefill: 'library', width: 1.2 }),
         c('link', 'Link', 'link', { width: 1.4 }),
@@ -113,6 +113,79 @@ export function subtitleCategory(): CategoryConfig {
       c('notes', 'Notes', 'longtext', { width: 2 }),
     ],
   };
+}
+
+type CueSheetProject = {
+  categories: CategoryConfig[];
+  episodes: { versions: { items: { [key: string]: { values: Item['values']; auto: Item['auto'] }[] } }[] }[];
+};
+
+/**
+ * The stock cue sheet used to show the parsed track title in Temp Cue Name.
+ * Move that default onto Cue Name, and leave Temp Cue Name blank for a name
+ * typed by hand. A project that already changed either column is left alone.
+ * Returns whether this project changed.
+ */
+export function migrateMusicCueColumns(project: CueSheetProject): boolean {
+  const keys: string[] = [];
+  for (const cat of project.categories) {
+    if (cat.grouping !== 'music') continue;
+    const temp = cat.columns.find((col) => col.id === 'tempCue');
+    const cue = cat.columns.find((col) => col.id === 'cueName');
+    if (!temp || !cue) continue;
+    if (temp.type !== 'auto' || temp.auto !== 'cueTitle') continue;
+    if (cue.type !== 'text' || cue.prefill || cue.auto) continue;
+    temp.type = 'text';
+    delete temp.auto;
+    cue.prefill = 'cueTitle';
+    keys.push(cat.key);
+  }
+  if (!keys.length) return false;
+  for (const episode of project.episodes) {
+    for (const version of episode.versions) {
+      for (const key of keys) {
+        for (const item of version.items[key] ?? []) {
+          const current = item.values.cueName;
+          if ((current === undefined || current === '' || current === null) && item.auto.cueTitle) {
+            item.values.cueName = item.auto.cueTitle;
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
+
+/**
+ * The stock Artist column only displayed the name parsed from the file.
+ * Make that column editable, and copy a parsed name in when the cell is empty.
+ * A project that already changed the column is left alone.
+ */
+export function migrateArtistColumn(project: CueSheetProject): boolean {
+  const keys: string[] = [];
+  for (const cat of project.categories) {
+    if (cat.grouping !== 'music') continue;
+    const artist = cat.columns.find((col) => col.id === 'artist');
+    if (!artist || artist.type !== 'auto' || artist.auto !== 'artist' || artist.prefill) continue;
+    artist.type = 'combo';
+    artist.prefill = 'artist';
+    delete artist.auto;
+    keys.push(cat.key);
+  }
+  if (!keys.length) return false;
+  for (const episode of project.episodes) {
+    for (const version of episode.versions) {
+      for (const key of keys) {
+        for (const item of version.items[key] ?? []) {
+          const current = item.values.artist;
+          if ((current === undefined || current === '' || current === null) && item.auto.artist) {
+            item.values.artist = item.auto.artist;
+          }
+        }
+      }
+    }
+  }
+  return true;
 }
 
 /** Add the subtitle tracker when a saved project doesn't have one yet. */
